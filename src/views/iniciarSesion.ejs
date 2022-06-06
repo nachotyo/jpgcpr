@@ -1,0 +1,30 @@
+<% layout('layout/main.ejs') %>
+    <!-- Formulario para iniciar sesion, utilizaremos el metodo POST de la ruta /iniciarSesion -->
+    <div class="container-lg">
+        <div class="row">
+            <div class="col mt-4 text-center">
+                <form action="/iniciarSesion" method="POST">
+                    <div class="card-header border border-dark rounded-pill">
+                        <h3>Iniciar Sesión</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="input-group ">
+                            <div class="input-group-text rounded-pill"><i class="bi bi-at"></i> </div>
+                            <input type="email" name="email" class="form-control rounded-pill" placeholder="Email">
+                        </div>
+                        <div class="input-group ">
+                            <div class="input-group-text rounded-pill"><i class="bi bi-bag"></i>
+                            </div>
+                            <input type="password" name="password" class="form-control rounded-pill"
+                                placeholder="Contraseña">
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-block mt-4 btn-dark btn-lg rounded-pill">
+                                iniciar sesión
+                            </button>
+                        </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>

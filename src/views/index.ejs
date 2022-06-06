@@ -1,0 +1,117 @@
+<% layout('layout/navbar.ejs') %>
+<style>
+  div#crearCuenta{
+    color: aliceblue;
+    width: 2000px;
+    height: 150px;
+    margin-top: 3%;
+    margin-bottom: 3%;
+  }
+  div#tarjetasJuegos{
+    margin-left: 20%;
+    margin-bottom: 5%;
+  }
+</style>
+
+<div class="shadow p-3 mb-5 bg-body rounded contenedor">
+      <h1 class="text-center">Juegos para gente con pocos recursos</h1>
+    </div>
+
+    <p class="text-center container-sm">'Juegos para gente con pocos recursos' o 'JPGCPR' es una página de juegos donde cualquier usuario puede disfrutar la experiencia de jugar con monedas ficticias de una forma simple y sin gastos reales, lo único que necesitara es una dirección de correo válida.</p>
+
+    <div class="container-lg bg-dark position-relative" id="crearCuenta">
+     <div id="textoCrearCuenta" class="position-absolute top-50 start-50 translate-middle">
+      <h1 class="text-center">¿No tienes cuenta?</h1>
+      <h5 class="text-center">Puedes crear una cuenta y ¡ganar 10 monedas gratis <a href="/registrarse">pulsando aqui</a> !<h5>
+      </div>
+    </div>
+
+    <div class="row" id="tarjetasJuegos">
+      <div class="col-sm-6 w-25" >
+        <div class="card">
+          <img src="/fondoCaballos.jpg" class="card-img-top" alt="Imagen Carrera Caballos" />
+          <div class="card-body">
+            <h5 class="card-title">Carrera De Caballos</h5>
+            <p class="card-text">
+              Corren los caballos, necesita tener una cuenta para jugar.
+            </p>
+            <div class="d-grid gap-2">
+              <a href="caballos" id="btnFalso" class="btn btn-primary">¡Jugar!</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6  w-25">
+        <div class="card">
+          <img src="/fondoBlack.jpg" class="card-img-top" alt="..." />
+          <div class="card-body">
+            <h5 class="card-title">BlackJack</h5>
+            <p class="card-text">
+              Juega al blackJack, necesita tener una cuenta para jugar.
+            </p>
+            <div class="d-grid gap-2">
+            <a href="blackjack" class="btn btn-primary ">¡Jugar!</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 w-25">
+        <div class="card">
+          <img src="/fondoRuleta.jpg" class="card-img-top" alt="..." />
+          <div class="card-body">
+            <h5>Ruleta de colores<span class="badge bg-secondary">Nuevo</span></h5>
+            <p class="card-text"> 
+              Juega ala Ruleta, necesita tener una cuenta para jugar.
+            </p>
+            <div class="d-grid gap-2">
+            <a href="ruleta" class="btn btn-primary">¡Jugar!</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" id="tarjetasJuegos">
+      <div class="col-sm-6 w-25" >
+        <div class="card">
+          <img src="/fondoCaballos.jpg" class="card-img-top" alt="Imagen Carrera Caballos" />
+          <div class="card-body">
+            <h5 class="card-title">Carrera De Caballos</h5>
+            <p class="card-text">
+              Corren los caballos, necesita tener una cuenta para jugar.
+            </p>
+            <div class="d-grid gap-2">
+              <a href="caballos" id="btnFalso" class="btn btn-primary">¡Jugar!</a>
+              </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6  w-25">
+        <div class="card">
+          <img src="/fondoBlack.jpg" class="card-img-top" alt="..." />
+          <div class="card-body">
+            <h5 class="card-title">BlackJack</h5>
+            <p class="card-text">
+              Juega al blackJack, necesita tener una cuenta para jugar.
+            </p>
+            <div class="d-grid gap-2">
+            <a href="blackjack" class="btn btn-primary">¡Jugar!</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 w-25">
+        <div class="card">
+          <img src="/fondoRuleta.jpg" class="card-img-top" alt="..." />
+          <div class="card-body">
+            <h5 class="card-title">Ruleta</h5>
+            <p class="card-text"> 
+              Juega ala Ruleta, necesita tener una cuenta para jugar.
+            </p>
+            <div class="d-grid gap-2">
+            <a href="ruleta" class="btn btn-primary">¡Jugar!</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>

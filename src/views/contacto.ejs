@@ -1,0 +1,24 @@
+<% layout('layout/navbar.ejs') %>
+
+
+
+<body>
+    <div class="shadow p-3 mb-5 bg-body rounded contenedor">
+        <h2 class="text-center">Contacto</h2>
+      </div>
+      <h3 class="text-center">¿Tienes algun problema? ¡Escribenos!</h3>
+      <%if (user) { %>
+      <div class="container-sm">
+        <div class="mb-3">
+          <form action="/contacto" method="POST">
+            <input type="hidden" name="id" value="<%= user.id %>"></input>
+            <label for="exampleFormControlTextarea1" class="form-label"></label>
+            <textarea class="form-control" name="contenido" id="contenido" rows="3"></textarea>
+            <button type="submit" class="btn btn-primary btn-block mt-4 btn-dark btn-lg rounded-pill" id="Reclamar">Enviar</button>
+          </form>
+        </div>
+      </div>
+      <% } else { %>
+         <h4 class="text-center p-5">Tienes que iniciar sesión para poder escribir</h4>
+      <% } %> 
+</body>

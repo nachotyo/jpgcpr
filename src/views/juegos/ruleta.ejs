@@ -1,0 +1,372 @@
+<% layout('layout/navbar.ejs') %>
+
+  <head>
+    <style>
+      #espacioRuleta {
+        margin-top: 2%;
+        margin-bottom: 2%;
+      }
+
+      .alertasPersonalizadas {
+        margin-left: 20%;
+        margin-right: 20%;
+        margin-bottom: 1%;
+        margin-top: 2%;
+      }
+
+      #fondo {
+        margin-left: 20%;
+        margin-top: 2%;
+        margin-right: 20%;
+        height: 150px;
+      }
+
+      .instruccionesCompacto{
+      margin-top: 5%;
+      margin-left: 20%;
+      margin-right: 20%;
+      margin-bottom: 5%;
+    }
+
+    #divPrincipio{
+      margin-top: 2%;
+    }
+    </style>
+
+    <script>
+      window.onload = function () {
+        // Array de las imagenes que componen la ruleta
+        arrayImagenes = new Array();
+        image1 = new Image();
+        image1.src = "/ruleta/rojo.png";
+        image2 = new Image();
+        image2.src = "/ruleta/negro.png";
+        image3 = new Image();
+        image3.src = "/ruleta/verde.png";
+        arrayImagenes = [
+          image1.src,
+          image2.src,
+          image3.src,
+        ];
+
+        arrayJuego = new Array();
+        arrayColocados = new Array();
+        index = 0;
+        vecesGirar = 0;
+        turno = 0;
+        // Obtención de elementos del body
+        espacioRuleta = document.getElementById("espacioRuleta");
+        btnEmpezar = document.getElementById("btnEmpezar");
+        color = document.getElementById("color");
+        divPrincipio = document.getElementById("divPrincipio");
+        divFinal = document.getElementById("divFinal");
+        dinero = document.getElementById("dinero").textContent;
+        alertaVictoria = document.getElementById("alertaVictoria");
+        alertaDerrota = document.getElementById("alertaDerrota");
+        alertaColor = document.getElementById("alertaColor");
+        alertaDinero = document.getElementById("alertaDinero");
+        // Hacemos invisibles las alertas y el div de volver a jugar
+        alertaVictoria.style.display = "none";
+        alertaDerrota.style.display = "none";
+        alertaColor.style.display = "none";
+        alertaDinero.style.display = "none";
+        divFinal.style.display = "none";
+        // Separamos el texto del dinero por espacios
+        dineroLimpio = dinero.split(" ");
+
+        // Si la variable puedeJugar no existe en local
+        if (!localStorage.getItem("puedeJugar")) {
+          // La crea y la pone a true, esta variable nos dira si el usuario puede jugar o no
+          localStorage.setItem("puedeJugar", "true");
+        }
+        // Obtenemos la variable local "puedeJugar"
+        puedeJugar = localStorage.getItem("puedeJugar");
+        // Guardamos otra variable en local con el dinero que tiene ahora el usuario
+        localStorage.setItem("localDinero", parseInt(dineroLimpio[2]));
+        // Obtenemos la variable local "localDinero"
+        localDinero = localStorage.getItem("localDinero");
+
+        // Si localDinero no es igual a "localApuesta" (LocalApuesta es una variable que se crea despues, esta variable contiene el dinero del usuario despues de jugar) y puedeJugar es false
+        if (localDinero != parseInt(localStorage.getItem("localApuesta")) && puedeJugar == "false") {
+          // Obtenemos la variable "localApuesta"
+          dineroFinal = parseInt(localStorage.getItem("localApuesta"));
+          // Cambiamos el valor de premioFinal por el valor de dineroFinal
+          document.getElementById("premioFinal").value = dineroFinal;
+          // Ponemos invisible divPrincipio
+          divPrincipio.style.display = "none";
+          // Ponemos visible divFinal
+          divFinal.style.display = "block";
+          // Si no es
+        } else {
+          // Ponemos la variable puedeJugar en true
+          localStorage.setItem("puedeJugar", "true");
+          // Si el usuario pulsa el botón de empezar el juego empezara
+          btnEmpezar.onclick = empezar;
+        }
+
+        // For de 100 para rellenar el array de juego
+        for (let i = 0; i < 100; i++) {
+          // Sacamos un número aleatorio entre 0 y 100
+          aleatorio = Math.floor(Math.random() * (100 - 0)) + 0;
+          // Si esta entre 0 y 45
+          if (aleatorio >= 0 && aleatorio <= 45) {
+            // Rellenamos este hueco con rojo
+            arrayJuego[i] = arrayImagenes[0];
+            // Si esta entre 45 y 90
+          } else if (aleatorio > 45 && aleatorio <= 90) {
+            // Rellenamos este hueco con negro
+            arrayJuego[i] = arrayImagenes[1];
+            // Si esta entre 90 y 100
+          } else if (aleatorio > 90 && aleatorio <= 100) {
+            // Rellenamos este hueco con verde
+            arrayJuego[i] = arrayImagenes[2];
+          }
+        }
+
+        // For de 5 para mostrar los primeros 5 colores
+        for (j = 0; j < 5; j++) {
+          // Creamos un img
+          imgGenerado = document.createElement("img");
+          // Ponemos el src de la img
+          imgGenerado.src = arrayJuego[j];
+          // Le añadimos un margin
+          imgGenerado.style.margin = 2 + "px";
+          // Lo añadimos al div
+          espacioRuleta.appendChild(imgGenerado);
+          // Guardamos esa img en un array
+          arrayColocados[j] = imgGenerado;
+        }
+
+      }
+
+      // Función para empezar a jugar
+      function empezar() {
+        // Comprobamos si la apuesta del usuario esta entre 0 y su dinero total
+        if (document.getElementById("apuesta").value <= parseInt(dineroLimpio[2]) && document.getElementById("apuesta").value > 0) {
+          // Comprobamos si ha elegido un color valido
+          alertaDinero.style.display = "none";
+          if (color.value > 1) {
+            alertaColor.style.display = "none";
+            divPrincipio.style.display = "none";
+            // Cambiamos el valor de la variable local puedeJugar a false
+            localStorage.setItem("puedeJugar", "false");
+            // Ponemos invisible el divPrincipio
+            divPrincipio.style.display = "none";
+            // Creamos un número aleatorio
+            aleatorio = Math.floor(Math.random() * (15 - 5)) + 5;
+            // Creamos un intervalo para girar la ruleta
+            intervalGirar = setInterval(girarRuleta, 500);
+          } else {
+            alertaColor.style.display = "block";
+          }
+        } else {
+          alertaDinero.style.display = "block";
+          alertaColor.style.display = "none";
+
+        }
+      }
+
+      // Función para girar la ruleta
+      function girarRuleta() {
+        // Comprueba si todavía le quedan vueltas por dar
+        if (vecesGirar < aleatorio) {
+          // Quitamos del div la primera img
+          espacioRuleta.removeChild(arrayColocados[turno]);
+          // Creamos una img
+          imgGenerado = document.createElement("img");
+          // Le asignamos un src
+          imgGenerado.src = arrayJuego[j];
+          // Le añadimos un margin
+          imgGenerado.style.margin = 2 + "px";
+          // La añadimos al div
+          espacioRuleta.appendChild(imgGenerado);
+          // La añadimos al array
+          arrayColocados[j] = imgGenerado;
+          // Variable para saber que img hay que borrar del div
+          turno++;
+          // Variable para recorrer el array
+          j++;
+          // Variable para saber cuantas vueltas ha dado la ruleta
+          vecesGirar++;
+          // Si ya ha terminado de girar
+        } else {
+          // Borra el interval
+          clearInterval(intervalGirar);
+          // Llama a la función finalJuego
+          finalJuego();
+        }
+
+      }
+
+      // Función para finalizar el juego
+      function finalJuego() {
+        // Variable Boolean para saber si el usuario ha ganado
+        acierto = false;
+        // Switch que esta enfocado en la posición 2 del array de colores
+        switch (arrayColocados[j - 3].src) {
+          // Si ha salido rojo
+          case arrayImagenes[0]:
+            // Si el usuario ha elegido rojo
+            if (color.value == 2) {
+              // Se muestra un alert de victoria
+              alertaVictoria.style.display = "block";
+              // Se calcula el dinero que ha ganado el usaurio
+              dineroFinal = parseInt(dineroLimpio[2]) + parseInt(document.getElementById("apuesta").value);
+              // Se cambia el valor del dinero del usuario en el div
+              document.getElementById("premioFinal").value = dineroFinal;
+              // acierto = true
+              acierto = true;
+            }
+            break;
+          // Si ha salido negro
+          case arrayImagenes[1]:
+            if (color.value == 3) {
+              alertaVictoria.style.display = "block";
+              dineroFinal = parseInt(dineroLimpio[2]) + parseInt(document.getElementById("apuesta").value);
+              document.getElementById("premioFinal").value = dineroFinal;
+              acierto = true;
+
+            }
+            break;
+          // Si ha salido verde
+          case arrayImagenes[2]:
+            if (color.value == 4) {
+              alertaVictoria.style.display = "block";
+              dineroFinal = parseInt(dineroLimpio[2]) + (parseInt(document.getElementById("apuesta").value) * 2);
+              document.getElementById("premioFinal").value = dineroFinal;
+              acierto = true;
+
+            }
+            break;
+        }
+        // Si el usaurio no ha acertado el color
+        if (!acierto) {
+          // Se muestra el alert de derrota
+          alertaDerrota.style.display = "block";
+          // Se resta el dinero
+          dineroFinal = parseInt(dineroLimpio[2]) - parseInt(document.getElementById("apuesta").value);
+          // Se cambia el valor del dinero del usuario en el div
+          document.getElementById("premioFinal").value = dineroFinal;
+        }
+        // Se muestra el div para volver a jugar
+        divFinal.style.display = "block";
+        guardarLocal(dineroFinal);
+      }
+
+      // Función para guardar el dinero final del usuario en local
+      function guardarLocal(dineroF) {
+        localStorage.setItem("localApuesta", dineroF);
+      }
+    </script>
+
+  </head>
+
+  <body>
+    <div class="shadow p-3 mb-5 bg-body rounded contenedor">
+      <h2 class="text-center">Ruleta de colores</h2>
+    </div>
+    <!-- Alertas personalizadas -->
+    <div class="alert alert-success alertasPersonalizadas" id="alertaVictoria" role="alert">
+      ¡Has ganado!
+    </div>
+
+    <div class="alert alert-warning alertasPersonalizadas" id="alertaDerrota" role="alert">
+      Has perdido, más suerte la proxima vez.
+    </div>
+    <div class="alert alert-danger alertasPersonalizadas" id="alertaDinero" role="alert">
+      No tiene suficiente dinero
+    </div>
+
+    <div class="alert alert-danger alertasPersonalizadas" id="alertaColor" role="alert">
+      Tiene que seleccionar un color
+    </div>
+    <div class="bg-success p-2 text-white bg-opacity-75 position-relative" id="fondo">
+      <img src="/ruleta/flecha.png" class="position-absolute top-0 start-50 translate-middle">
+      <div id="espacioRuleta" class="position-absolute top-50 start-50 translate-middle">
+
+      </div>
+
+    </div>
+
+    <!-- Div Principal donde se empieza el juego -->
+    <div class="container-lg" id="divPrincipio">
+      <div class="input-group">
+        <span class="input-group-text">Apuesta y Color</span>
+        <input type="text" aria-label="Apuesta" id="apuesta" class="form-control">
+        <select class="form-select" aria-label="Default select example" id="color" name="color"> 
+          <option selected>Elige un color</option>
+          <option value="2">Rojo</option>
+          <option value="3">Negro</option>
+          <option value="4">Verde</option>
+        </select>
+      </div>
+      <!-- Boton para empezar a jugar -->
+     <!-- <button id="btnEmpezar">Empezar</button>-->
+      <button type="button" class="btn btn-primary btn-block mt-4 btn-dark btn-lg rounded-pill" id="btnEmpezar">Empezar</button>
+      <!-- Div invisible donde guardamos el dinero del usuario -->
+      <div class="invisible">
+        <h4 id="dinero">
+          <!-- Dinero del usuario -->
+          <%= user.monedas %>
+        </h4>
+      </div>
+    </div>
+
+    <!-- Div Final donde se finaliza el juego -->
+    <div class="container-lg" id="divFinal">
+      <div class="row">
+        <div class="col mt-4 text-center">
+          <!-- Creamos un form para enviarselo a la base de datos -->
+          <form action="/ruleta" method="POST">
+            <!-- Input donde estará el id del usuario (Este input es invisible) -->
+            <input type="hidden" name="id" value="<%= user.id %>"></input>
+            <!-- Input donde estará las monedas finales del usuario (Este input es invisible) -->
+            <input type="number" class="invisible" name="monedas" id="premioFinal" placeholder="Monedas">
+            <p></p>
+            <!-- Botón para enviar el form a la base de datos -->
+            <button type="submit" class="btn btn-primary btn-block mt-4 btn-dark btn-lg rounded-pill" id="Reclamar">Volver a jugar</button>
+            <!--
+            <button id="Reclamar">
+              Volver a jugar
+            </button>
+            -->
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="instruccionesCompacto border-start-0">
+      <div class="accordion accordion-flush" id="accordionFlushExample">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="flush-headingOne">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+              Instrucciones de juego
+            </button>
+          </h2>
+          <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+            <div class="accordion-body"> <p>El usuario tendrá que elegir un color entre rojo, negro y verde. Si al final la flecha señala a un cuadrado con el color seleccionado, el usuario ganara.</p>
+            <p>La apuesta tendrá que ser menor al sueldo del usuario.</p></div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="flush-headingTwo">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+              Sin diversión no hay juego
+            </button>
+          </h2>
+          <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+            <div class="accordion-body">En Apuestas para gente con pocos recursos no se apuesta con dinero real, ¡Que nada te impida pasar un buen rato jugando!</div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="flush-headingThree">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+              ¿Algún problema?
+            </button>
+          </h2>
+          <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+            <div class="accordion-body">¿Algún problema en alguno de nuestros juegos? <a href="/contacto">¡Contáctanos clicando aquí!</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
