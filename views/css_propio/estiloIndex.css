@@ -1,0 +1,57 @@
+h1{
+    text-align: center;
+    color: aqua;
+    padding: 2rem;
+}
+
+p#texto{
+    color: blue;
+    padding-left: 20rem;
+    padding-right: 20rem;
+    text-align: center;
+}
+
+div#seccionJuegos{
+    padding: 5%;
+    margin: auto;
+}
+
+#finalInformacion{
+  margin: 123px;
+}
+
+/* Caballos */
+
+#divPrincipio{
+    position: absolute;
+    margin-top: 3%;
+    margin-left: 42%;
+  }
+
+  #divFinal{
+    position: absolute;
+    margin-top: 3%;
+    margin-left: 16%;
+  }
+
+  #contenedor {
+    position: relative;
+    margin-left: 23%;
+    margin-top: 5%;
+    width: 1050px;
+    height: 250px;
+    background-image: url(../imagenes/pista.png);
+  }
+
+  #instrucciones{
+    position: absolute;
+    width: 20%;
+    margin-top: -13%;
+    margin-left: 1.2%;
+  }
+  
+  #textoInstrucciones{
+    margin: 5%;
+  }
+
+

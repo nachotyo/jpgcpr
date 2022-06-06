@@ -1,0 +1,50 @@
+<% layout('layout/navbar.ejs') %>
+
+<style>
+#divPrincipio {
+    position: absolute;
+    margin-top: 1%;
+    margin-left: 31%;
+  }
+</style>
+
+<script>
+  window.onload = function() {
+
+arrayImagenes = new Array();
+    image1 = new Image();
+    image1.src = "/barajaBlackJack/uno.png";
+
+    arrayImagenes = [
+      image1.src,
+
+    ];
+
+  }
+</script>
+
+<div class="container-lg" id="divPrincipio">
+    <p>Apuesta</p>
+    <input id="texto"></input>
+    <button id="btnEmpezar">Empezar</button>
+    <div class="invisible">
+      <h4 id="dinero">
+        <%= user.monedas %>
+      </h4>
+    </div>
+  </div>
+  
+  <div class="container-lg" id="divFinal">
+    <div class="row">
+      <div class="col mt-4 text-center">
+        <form action="/blackjack" method="POST">
+          <input type="hidden" name="id" value="<%= user.id %>"></input>
+          <input type="number" class="invisible" name="monedas" id="premioFinal" placeholder="Monedas">
+          <p></p>
+          <button id="Reclamar">
+            Volver a jugar
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>

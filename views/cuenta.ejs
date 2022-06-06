@@ -1,0 +1,42 @@
+<style>
+#divFinal{
+  margin-top: -4%;
+}
+#tarCuenta{
+  margin-left: -20%;
+  margin-right: -20%;
+}
+</style>
+<% layout('layout/navbar.ejs') %>
+<div class="card text-center" id="tar_cuenta">
+  <div class="card-header">
+    <h1>Cuenta</h1>
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Email: <%= user.email %></h5>
+    <p class="card-text">Monedas: <%= user.monedas %></p>
+
+    <div class="container-lg" id="divFinal">
+      <div class="row">
+        <div class="col mt-4 text-center">
+
+          <form action="/cuenta" method="POST">
+            <input type="hidden" name="id" value="<%= user.id %>"></input>
+            <input type="number" class="invisible" name="monedas" id="premioFinal" placeholder="Monedas">
+            <p></p>
+            <button id="Reclamar">
+              Monedas gratis
+            </button>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-footer text-muted">
+    Ultimo Inicio De Sesión: <%= user.ult_inicio %>
+  </div>
+</div>
+
+<!--<h1>Cada día podras recibir 2 monedas totalmente gratis en el perfil de tu cuenta.</h1>-->
