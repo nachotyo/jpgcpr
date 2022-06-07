@@ -70,15 +70,24 @@ router.get('/user/edit/:id', async(req,res,next)=>{
 });
 
 router.post('/user/edit-user/:id', async(req,res,next)=>{
+    console.log('>>>>>>>>>> post edit');
     const emailEdit = req.body.email;
-    //const passwordEdit = req.body.password;
     const monedasEdit = req.body.monedas;
-    //console.log('email: ' + emailEdit + ' password: ' + passwordEdit + ' monedas: '+ monedasEdit);
     let user = await Usuario.findOne({email: emailEdit});
-    user.id = ' ';
-    if((user && user.id != req.body.id) || isNaN(monedasEdit)){console.log('>>>>>>>>>>>>>> error')}else{
-        console.log('>>>>>>>>>>>>>> todo ok')
-        await Usuario.findOneAndUpdate({_id: req.body.id} , {email: emailEdit, monedas: monedasEdit});
+    if(user){
+        if(user.id != req.body.id){
+            if(!isNaN(monedasEdit)){
+                await Usuario.findOneAndUpdate({_id: req.body.id} , {monedas: monedasEdit});
+            }
+        }else{
+            if(!isNaN(monedasEdit)){
+            await Usuario.findOneAndUpdate({_id: req.body.id} , {email: emailEdit, monedas: monedasEdit});
+            }
+        }
+    }else{
+        if(!isNaN(monedasEdit)){
+            await Usuario.findOneAndUpdate({_id: req.body.id} , {email: emailEdit, monedas: monedasEdit});
+        }
     }
     res.redirect('/admin');
 });
