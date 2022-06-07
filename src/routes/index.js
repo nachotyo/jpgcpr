@@ -65,6 +65,7 @@ res.render('adminPannel/admin', {usuarios, contactos});
 
 router.get('/user/edit/:id', async(req,res,next)=>{
     const user = await Usuario.findById(req.params.id);
+    console.log('>>>>>>>>>>>> user ' + user);
     res.render('adminPannel/editUser', {user});
 });
 
@@ -73,12 +74,11 @@ router.post('/user/edit-user/:id', async(req,res,next)=>{
     //const passwordEdit = req.body.password;
     const monedasEdit = req.body.monedas;
     //console.log('email: ' + emailEdit + ' password: ' + passwordEdit + ' monedas: '+ monedasEdit);
-    let user = Usuario.findOne({email: emailEdit});
-    if(user){}else{
-        await Usuario.findOneAndUpdate({_id: req.body.id} , {email: emailEdit});
-        if(!isNaN(monedasEdit)){
-            await Usuario.findOneAndUpdate({_id: req.body.id} , {monedas: monedasEdit});
-        }
+    let user = await Usuario.findOne({email: emailEdit});
+    user.id = ' ';
+    if((user && user.id != req.body.id) || isNaN(monedasEdit)){console.log('>>>>>>>>>>>>>> error')}else{
+        console.log('>>>>>>>>>>>>>> todo ok')
+        await Usuario.findOneAndUpdate({_id: req.body.id} , {email: emailEdit, monedas: monedasEdit});
     }
     res.redirect('/admin');
 });
